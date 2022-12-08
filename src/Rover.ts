@@ -16,7 +16,7 @@ class Rover {
     }
 
     forward() {
-        switch(this.orientation) {
+        switch (this.orientation) {
             case 'N':
                 this.y += 1
                 break
@@ -33,7 +33,7 @@ class Rover {
     }
 
     backward() {
-        switch(this.orientation) {
+        switch (this.orientation) {
             case 'N':
                 this.y -= 1
                 break
@@ -49,10 +49,10 @@ class Rover {
         }
     }
 
-    rotate(direction) {
-        switch(this.orientation) {
+    rotate(direction: string) {
+        switch (this.orientation) {
             case 'N':
-                if(direction === 'r') {
+                if (direction === 'r') {
                     this.orientation = 'E'
                 }
                 else {
@@ -60,7 +60,7 @@ class Rover {
                 }
                 break
             case 'S':
-                if(direction === 'r') {
+                if (direction === 'r') {
                     this.orientation = 'O'
                 }
                 else {
@@ -68,7 +68,7 @@ class Rover {
                 }
                 break
             case 'E':
-                if(direction === 'r') {
+                if (direction === 'r') {
                     this.orientation = 'S'
                 }
                 else {
@@ -76,7 +76,7 @@ class Rover {
                 }
                 break
             case 'O':
-                if(direction === 'r') {
+                if (direction === 'r') {
                     this.orientation = 'N'
                 }
                 else {
@@ -84,6 +84,62 @@ class Rover {
                 }
                 break
         }
+    }
+
+    orders(instructions: string) {
+        const arr: string[] = [...instructions];
+        arr.forEach((char) => {
+            if (char === 'f') {
+                this.forward()
+            }
+            else if (char === 'b') {
+                this.backward()
+            }
+            else {
+                this.rotate(char)
+            }
+
+            if(this.x > 10) {
+                this.x = -10
+                if(this.orientation === 'E') {
+                    this.orientation = 'O'
+                }
+                else {
+                    this.orientation = 'E'
+                }
+            }
+    
+            if(this.x < -10) {
+                this.x = 10
+                if(this.orientation === 'O') {
+                    this.orientation = 'E'
+                }
+                else {
+                    this.orientation = 'O'
+                }
+            }
+    
+            if(this.y > 10) {
+                this.y = -10
+                if(this.orientation === 'N') {
+                    this.orientation = 'S'
+                }
+                else {
+                    this.orientation = 'N'
+                }
+            }
+    
+            if(this.y < -10) {
+                this.y = 10
+                if(this.orientation === 'S') {
+                    this.orientation = 'N'
+                }
+                else {
+                    this.orientation = 'S'
+                }
+            }
+            console.log("the Rover position is now x : " + this.x + " y : " + this.y + " and orientation : " + this.orientation)
+        }) 
     }
 }
 
