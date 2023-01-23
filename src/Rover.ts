@@ -1,145 +1,114 @@
+import Map from "./Map";
 class Rover {
 
-    orientation: string;
+    direction: string;
     x: number;
     y: number;
+    map: Map; 
 
-
-    constructor(x: number, y: number, orientation: string) {
-        this.x = x
-        this.y = y
-        this.orientation = orientation
+    constructor(x, y, direction, map) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.map = map
     }
-
-    getPositions() {
-        return { x: this.x, y: this.y, orientation: this.orientation }
-    }
-
+    
     forward() {
-        switch (this.orientation) {
-            case 'N':
-                this.y += 1
-                break
-            case 'S':
-                this.y -= 1
-                break
-            case 'E':
-                this.x += 1
-                break
-            case 'O':
-                this.x -= 1
-                break
+        switch (this.direction) {
+        case 'N':
+            if(this.map.isValidPosition(this.x, this.y + 1)) {
+                this.y++;
+                console.log("test")
+            }
+            else
+                console.log("position invalide")
+            break;
+        case 'E':
+            if(this.map.isValidPosition(this.x + 1, this.y))
+                this.x++;
+            else
+                console.log("position invalide")
+            break;
+        case 'S':
+            if(this.map.isValidPosition(this.x, this.y - 1))
+                this.y--;
+            else
+                console.log("position invalide")
+            break;
+        case 'W':
+            if(this.map.isValidPosition(this.x - 1, this.y))
+                this.x--;
+            else
+                console.log("position invalide")
+            break;
         }
     }
 
     backward() {
-        switch (this.orientation) {
-            case 'N':
-                this.y -= 1
-                break
-            case 'S':
-                this.y += 1
-                break
-            case 'E':
-                this.x -= 1
-                break
-            case 'O':
-                this.x += 1
-                break
+        switch (this.direction) {
+        case 'N':
+            if(this.map.isValidPosition(this.x, this.y - 1))
+                this.y--;
+            else
+                console.log("position invalide")
+            break;
+        case 'E':
+            if(this.map.isValidPosition(this.x - 1, this.y))
+                this.x--;
+            else
+                console.log("position invalide")
+            break;
+        case 'S':
+            if(this.map.isValidPosition(this.x, this.y + 1))
+            this.y++;
+        else
+            console.log("position invalide")
+        break;
+        case 'W':
+            if(this.map.isValidPosition(this.x + 1, this.y))
+            this.x++;
+        else
+            console.log("position invalide")
+        break;
+        }
+    }
+    
+    rotateLeft() {
+        switch (this.direction) {
+        case 'N':
+            this.direction = 'W';
+            break;
+        case 'E':
+            this.direction = 'N';
+            break;
+        case 'S':
+            this.direction = 'E';
+            break;
+        case 'W':
+            this.direction = 'S';
+            break;
+        }
+    }
+    
+    rotateRight() {
+        switch (this.direction) {
+        case 'N':
+            this.direction = 'E';
+            break;
+        case 'E':
+            this.direction = 'S';
+            break;
+        case 'S':
+            this.direction = 'W';
+            break;
+        case 'W':
+            this.direction = 'N';
+            break;
         }
     }
 
-    rotate(direction: string) {
-        switch (this.orientation) {
-            case 'N':
-                if (direction === 'r') {
-                    this.orientation = 'E'
-                }
-                else {
-                    this.orientation = 'O'
-                }
-                break
-            case 'S':
-                if (direction === 'r') {
-                    this.orientation = 'O'
-                }
-                else {
-                    this.orientation = 'E'
-                }
-                break
-            case 'E':
-                if (direction === 'r') {
-                    this.orientation = 'S'
-                }
-                else {
-                    this.orientation = 'N'
-                }
-                break
-            case 'O':
-                if (direction === 'r') {
-                    this.orientation = 'N'
-                }
-                else {
-                    this.orientation = 'S'
-                }
-                break
-        }
-    }
-
-    orders(instructions: string) {
-        const arr: string[] = [...instructions];
-        arr.forEach((char) => {
-            if (char === 'f') {
-                this.forward()
-            }
-            else if (char === 'b') {
-                this.backward()
-            }
-            else {
-                this.rotate(char)
-            }
-
-            if(this.x > 10) {
-                this.x = -10
-                if(this.orientation === 'E') {
-                    this.orientation = 'O'
-                }
-                else {
-                    this.orientation = 'E'
-                }
-            }
-    
-            if(this.x < -10) {
-                this.x = 10
-                if(this.orientation === 'O') {
-                    this.orientation = 'E'
-                }
-                else {
-                    this.orientation = 'O'
-                }
-            }
-    
-            if(this.y > 10) {
-                this.y = -10
-                if(this.orientation === 'N') {
-                    this.orientation = 'S'
-                }
-                else {
-                    this.orientation = 'N'
-                }
-            }
-    
-            if(this.y < -10) {
-                this.y = 10
-                if(this.orientation === 'S') {
-                    this.orientation = 'N'
-                }
-                else {
-                    this.orientation = 'S'
-                }
-            }
-            console.log("the Rover position is now x : " + this.x + " y : " + this.y + " and orientation : " + this.orientation)
-        }) 
+    GetPositions() {
+        return [this.x, this.y, this.direction]
     }
 }
 
